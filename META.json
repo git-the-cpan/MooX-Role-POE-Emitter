@@ -4,7 +4,7 @@
       "Jon Portnoy <avenj@cobaltirc.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 5.020, CPAN::Meta::Converter version 2.142060",
+   "generated_by" : "Dist::Zilla version 5.032, CPAN::Meta::Converter version 2.143240",
    "license" : [
       "perl_5"
    ],
@@ -33,33 +33,24 @@
             "Class::Method::Modifiers" : "0",
             "List::Objects::Types" : "1",
             "List::Objects::WithUtils" : "2.007",
-            "Moo" : "1",
-            "Moo::Role" : "0",
-            "MooX::Role::Pluggable" : "0.12",
-            "MooX::late" : "0.014",
+            "Moo" : "1.006",
+            "MooX::Role::Pluggable" : "1",
             "POE" : "0",
             "Scalar::Util" : "0",
             "Try::Tiny" : "0",
-            "Type::Tiny" : "0.022",
-            "Types::Standard" : "0",
-            "perl" : "v5.10.1",
-            "strictures" : "1"
+            "Type::Tiny" : "1",
+            "perl" : "5.010001",
+            "strictures" : "2"
          }
       },
       "test" : {
          "recommends" : {
-            "CPAN::Meta" : "0",
-            "CPAN::Meta::Prereqs" : "0",
-            "CPAN::Meta::Requirements" : "2.120900"
+            "CPAN::Meta" : "2.120900"
          },
          "requires" : {
             "ExtUtils::MakeMaker" : "0",
             "File::Spec" : "0",
-            "List::Util" : "0",
-            "Scalar::Util" : "0",
-            "Test::Exception" : "0",
-            "Test::More" : "0.88",
-            "version" : "0.77"
+            "Test::More" : "0.88"
          }
       }
    },
@@ -71,6 +62,6 @@
          "web" : "https://github.com/avenj/moox-role-poe-emitter"
       }
    },
-   "version" : "1.001001"
+   "version" : "1.001002"
 }
 

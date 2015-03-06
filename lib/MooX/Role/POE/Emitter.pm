@@ -1,6 +1,6 @@
 package MooX::Role::POE::Emitter;
-$MooX::Role::POE::Emitter::VERSION = '1.001001';
-use strictures 1;
+$MooX::Role::POE::Emitter::VERSION = '1.001002';
+use strictures 2;
 
 use feature 'state';
 use Carp;
@@ -11,7 +11,6 @@ use List::Objects::Types -all;
 use Types::Standard      -types;
 
 use MooX::Role::Pluggable::Constants;
-use MooX::Role::POE::Emitter::RegisteredSession;
 
 use POE;
 
@@ -24,7 +23,7 @@ sub E_TAG () { 'Emitter Running' }
 =cut
 
 
-use Moo::Role; use MooX::late;
+use Moo::Role;
 with 'MooX::Role::Pluggable';
 
 
@@ -339,11 +338,17 @@ sub process {
 
 
 ## Session ref-counting bits.
+{ package MooX::Role::POE::Emitter::RegisteredSession;
+$MooX::Role::POE::Emitter::RegisteredSession::VERSION = '1.001002';
+  use Moo;
+  has [qw/id refcount/] => ( is => 'rw', required => 1 );
+}
 
 sub __get_ses_refc {
   my ($self, $sess_id) = @_;
-  return unless $self->__emitter_reg_sessions->exists($sess_id);
-  $self->__emitter_reg_sessions->get($sess_id)->refcount
+  my $regsess_obj = $self->__emitter_reg_sessions->get($sess_id);
+  return unless $regsess_obj;
+  $regsess_obj->refcount
 }
 
 sub __reg_ses_id {
@@ -485,7 +490,7 @@ sub __emitter_reset_alias {
 
 sub __emitter_disp_default {
   my ($kernel, $self) = @_[KERNEL, OBJECT];
-  my ($event, $args) = @_[ARG0, ARG1];
+  my ($event, $args)  = @_[ARG0, ARG1];
 
   if (ref $event eq 'CODE') {
     ## Anonymous coderef callback.
@@ -778,6 +783,9 @@ Most of these can be altered via B<set_$attrib> methods at any time before
 L</_start_emitter> is called. Changing an emitter's configuration after it has
 been started may result in undesirable behavior ;-)
 
+Public attributes provide B<has_> prefixed predicates; e.g.
+B<has_event_prefix>.
+
 =head4 alias
 
 B<alias> specifies the POE::Kernel alias used for our L<POE::Session>; 
@@ -793,7 +801,7 @@ dispatched to listening sessions. It is also used for the plugin
 pipeline's internal events; see L<MooX::Role::Pluggable/_pluggable_event> 
 for details.
 
-Defaults to I<emitted_>
+Defaults to C<emitted_>
 
 Set via B<set_event_prefix>
 
@@ -1092,12 +1100,14 @@ L<Role::Tiny>
 
 Jon Portnoy <avenj@cobaltirc.org>
 
-Written from the ground up, but conceptually derived from 
-L<POE::Component::Syndicator>-0.06 by BINGOS, HINRIK, 
-APOCAL et al. That will probably do you for non-Moo(se) use cases; I 
-needed something cow-like that worked with L<MooX::Role::Pluggable>. 
+Written from the ground up, but conceptually derived from
+L<POE::Component::Syndicator>-0.06 copyright Hinrik Orn Sigurosson (HINRIK),
+Chris Williams (BINGOS), APOCAL et al -- that will probably do you for
+non-Moo(se) use cases; I needed something cow-like that worked with
+L<MooX::Role::Pluggable>. 
 
-Licensed under the same terms as perl5
+Licensed under the same terms as Perl 5; see the license that came with your
+Perl distribution for details.
 
 =cut
 
